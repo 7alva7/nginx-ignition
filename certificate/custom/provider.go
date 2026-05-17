@@ -5,7 +5,6 @@ import (
 	"crypto/x509"
 	"encoding/base64"
 	"encoding/pem"
-	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -107,6 +106,10 @@ func (p *Provider) Renew(
 	return cert, nil
 }
 
+func (p *Provider) IsDueToRenew(_ context.Context, _ *certificate.Certificate) (bool, error) {
+	return false, nil
+}
+
 func parsePrivateKey(ctx context.Context, key string, base64Encoded bool) ([]byte, error) {
 	decodedKey, err := stringToByteArray(key, base64Encoded)
 	if err != nil {
@@ -165,18 +168,35 @@ func parseCertificateChain(
 	}
 
 	certs := make([]x509.Certificate, 0)
-	for _, cert := range strings.Split(string(decodedChain), "-----END CERTIFICATE-----") {
-		if !strings.Contains(cert, "BEGIN CERTIFICATE") {
+	remaining := decodedChain
+
+	for {
+		block, rest := pem.Decode(remaining)
+		if block == nil {
+			break
+		}
+
+		remaining = rest
+		if block.Type != "CERTIFICATE" {
 			continue
 		}
 
-		cert += "-----END CERTIFICATE-----"
-		parsedCert, err := parseCertificate(ctx, cert, false)
-		if err != nil {
-			return nil, err
+		parsed, parseErr := x509.ParseCertificate(block.Bytes)
+		if parseErr != nil {
+			return nil, coreerror.New(
+				i18n.M(ctx, i18n.K.CertificateCustomInvalidCertificationChain),
+				true,
+			)
 		}
 
-		certs = append(certs, *parsedCert)
+		certs = append(certs, *parsed)
+	}
+
+	if len(certs) == 0 {
+		return nil, coreerror.New(
+			i18n.M(ctx, i18n.K.CertificateCustomInvalidCertificationChain),
+			true,
+		)
 	}
 
 	return certs, nil

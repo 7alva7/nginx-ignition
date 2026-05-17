@@ -33,7 +33,7 @@ func (p *Provider) DynamicFields(_ context.Context) []dynamicfields.DynamicField
 }
 
 func (p *Provider) Priority() int {
-	return 3
+	return 4
 }
 
 func (p *Provider) Issue(
@@ -92,6 +92,17 @@ func (p *Provider) Renew(
 	}
 
 	return cert, nil
+}
+
+func (p *Provider) IsDueToRenew(
+	_ context.Context,
+	existing *certificate.Certificate,
+) (bool, error) {
+	if existing.RenewAfter == nil {
+		return false, nil
+	}
+
+	return !time.Now().Before(*existing.RenewAfter), nil
 }
 
 func buildPEMs(domainNames []string) (
