@@ -1,6 +1,6 @@
 import React from "react"
 import { Flex } from "antd"
-import { LockOutlined, LogoutOutlined, UserOutlined } from "@ant-design/icons"
+import { LockOutlined, LogoutOutlined } from "@ant-design/icons"
 import AppContext from "../../../core/components/context/AppContext"
 import ThemeToggle from "../../../core/components/theme/ThemeToggle"
 import "./ShellUserMenu.css"
@@ -66,14 +66,13 @@ export default class ShellUserMenu extends React.Component<any, ShellUserMenuSta
 
         return (
             <Flex className="shell-user-menu-container">
-                <Flex className="shell-user-menu-icon">
-                    <UserOutlined />
-                </Flex>
-                <Flex className="shell-user-menu-user-name">{user?.name}</Flex>
                 <Flex className="shell-user-menu-actions">
                     <ThemeToggle />
                     <I18nLanguagePicker />
                     <LockOutlined onClick={() => this.securitySettingsModal(true)} />
+                </Flex>
+                <Flex className="shell-user-menu-user-name">{user?.name}</Flex>
+                <Flex className="shell-user-menu-icon">
                     <LogoutOutlined onClick={() => this.handleLogout()} />
                 </Flex>
 
