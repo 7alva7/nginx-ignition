@@ -1,6 +1,7 @@
 DOCKER_IMAGE ?= dillmann/nginx-ignition
 VERSION ?= 0.0.0
 PR_ID ?= 0
+BUILDKIT_CACHE ?= build/cache/docker
 SNAPSHOT_TAG_SUFFIX := $(if $(filter-out 0,$(PR_ID)),pr-$(PR_ID)-snapshot,$(VERSION)-snapshot)
 LDFLAGS := -X 'dillmann.com.br/nginx-ignition/core/common/version.Number=$(VERSION)'
 
@@ -46,14 +47,20 @@ LDFLAGS := -X 'dillmann.com.br/nginx-ignition/core/common/version.Number=$(VERSI
 	go run ./tools/i18n/
 
 .build-release-docker-image:
+	mkdir -p $(BUILDKIT_CACHE)
 	docker buildx build \
+		--cache-from type=local,src=$(BUILDKIT_CACHE) \
+		--cache-to type=local,dest=$(BUILDKIT_CACHE),mode=max \
 		--tag $(DOCKER_IMAGE):$(VERSION) \
 		--tag $(DOCKER_IMAGE):latest \
 		--platform linux/amd64,linux/arm64 \
 		--push .
 
 .build-snapshot-docker-image:
+	mkdir -p $(BUILDKIT_CACHE)
 	docker buildx build \
+		--cache-from type=local,src=$(BUILDKIT_CACHE) \
+		--cache-to type=local,dest=$(BUILDKIT_CACHE),mode=max \
 		--tag $(DOCKER_IMAGE):$(SNAPSHOT_TAG_SUFFIX) \
 		--platform linux/amd64,linux/arm64 \
 		--push .
@@ -168,7 +175,24 @@ clean:
 		./vpn/netbird/... \
 		./vpn/tailscale/...
 
-update-dependencies: .backend-prerequisites .frontend-prerequisites
+.update-nginx-docker-image:
+	@LATEST=$$(curl -fsSL https://raw.githubusercontent.com/docker-library/official-images/master/library/nginx | \
+		awk '/^Tags:/{tags=$$0} /Directory: mainline\/alpine/{print tags; exit}' | \
+		grep -oE '[0-9]+\.[0-9]+\.[0-9]+-alpine' | head -1); \
+	CURRENT=$$(grep -E '^FROM nginx:' Dockerfile | grep -oE '[0-9]+\.[0-9]+\.[0-9]+-alpine' || true); \
+	if [ "$$CURRENT" = "$$LATEST" ]; then \
+		echo "nginx Docker image is up to date ($$LATEST)"; \
+	elif [ -z "$$CURRENT" ]; then \
+		sed -i'' -e "s|^FROM nginx:.* AS builder|FROM nginx:$$LATEST AS builder|" Dockerfile; \
+		echo "Pinned nginx Docker image to $$LATEST"; \
+	elif [ "$$(printf '%s\n' "$$CURRENT" "$$LATEST" | sort -V | tail -1)" = "$$LATEST" ] && [ "$$CURRENT" != "$$LATEST" ]; then \
+		sed -i'' -e "s|^FROM nginx:.* AS builder|FROM nginx:$$LATEST AS builder|" Dockerfile; \
+		echo "Updated nginx Docker image: $$CURRENT -> $$LATEST"; \
+	else \
+		echo "nginx Docker image ($$CURRENT) is newer than upstream ($$LATEST), skipping"; \
+	fi
+
+update-dependencies: .backend-prerequisites .frontend-prerequisites .update-nginx-docker-image
 	cd api && go get -u ./...
 	cd application && go get -u ./...
 	cd certificate/commons && go get -u ./...
