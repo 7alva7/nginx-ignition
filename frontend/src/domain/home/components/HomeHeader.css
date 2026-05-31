@@ -1,0 +1,72 @@
+.home-header {
+    background: var(--nginxIgnition-shellHeaderBg, var(--nginxIgnition-colorBgLayout));
+    padding: 48px 40px;
+    margin-bottom: 36px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.home-header-columns {
+    gap: 24px;
+    width: 100%;
+}
+
+.home-header-greeting {
+    flex: 1;
+    min-width: 240px;
+    gap: 10px;
+}
+
+.home-header-title {
+    font-size: 32px;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.home-header-subtitle {
+    font-size: 22px;
+    font-weight: 400;
+    margin: 0;
+    color: var(--nginxIgnition-colorTextSecondary);
+    line-height: 1.4;
+}
+
+html:not([data-theme="dark"]) .home-header-subtitle {
+    color: var(--nginxIgnition-colorTextTertiary);
+}
+
+.home-header-sidebar {
+    gap: 0;
+    min-width: 200px;
+}
+
+.home-header-meta-group {
+    gap: 2px;
+    line-height: 1.2;
+}
+
+.home-header-actions {
+    margin-top: 20px;
+}
+
+.home-header-update-button.ant-btn {
+    color: var(--ant-color-warning-text) !important;
+    background: var(--ant-color-warning-bg) !important;
+    border-color: var(--ant-color-warning-border) !important;
+}
+
+.home-header-update-button.ant-btn:hover:not(:disabled) {
+    color: var(--nginxIgnition-colorWarning) !important;
+    background: var(--ant-color-warning-bg) !important;
+    border-color: var(--nginxIgnition-colorWarning) !important;
+}
+
+.home-header-meta-line {
+    font-size: 14px;
+    color: var(--nginxIgnition-colorTextSecondary);
+}
+
+html:not([data-theme="dark"]) .home-header-meta-line {
+    color: var(--nginxIgnition-colorTextTertiary);
+}

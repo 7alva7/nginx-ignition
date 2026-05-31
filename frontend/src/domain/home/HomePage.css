@@ -1,83 +1,286 @@
-.home-guide-container h1 {
-    font-size: 38px;
-    margin: 0;
-    text-align: center;
+.home-dashboard-container {
+    gap: 36px;
+    padding: 0 40px 16px;
 }
 
-.home-guide-subtitle {
-    margin: 10px 0 0 !important;
-    font-size: 28px !important;
-    text-align: center;
-}
-
-.home-guide-header-container {
-    background: var(--nginxIgnition-shellHeaderBg, var(--nginxIgnition-colorBgLayout));
-    padding: 120px 40px;
-    margin-bottom: 50px;
-}
-
-.home-guide-container h2 {
-    font-size: 28px;
-    margin-top: 20px;
-}
-
-.home-guide-container p {
-    font-size: 16px;
-    margin: 10px 0;
-    padding: 0;
-}
-
-.home-guide-right-side-video,
-.home-guide-left-side-video {
-    flex-grow: 0;
-    flex-shrink: 0;
-    width: 40%;
-}
-
-.home-guide-container video {
+.home-dashboard-overview-row {
+    gap: 24px;
     width: 100%;
+    display: grid;
+    align-items: stretch;
 }
 
-.home-guide-right-side-video {
-    margin: 0 0 0 40px;
+.home-dashboard-totals-section {
+    min-width: 0;
 }
 
-.home-guide-left-side-video {
-    margin: 0 40px 0 0;
+.home-dashboard-overview-row-count-1 {
+    grid-template-columns: repeat(1, minmax(180px, 1fr));
 }
 
-.home-guide-video-mask {
-    border-radius: 10px;
-    overflow: hidden;
-    height: fit-content;
-    line-height: 0;
+.home-dashboard-overview-row-count-2 {
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
 }
 
-.home-guide-video-mask video {
+.home-dashboard-overview-row-count-3 {
+    grid-template-columns: repeat(3, minmax(180px, 1fr));
+}
+
+.home-dashboard-overview-row-with-nginx.home-dashboard-overview-row-count-0 {
+    grid-template-columns: repeat(1, minmax(180px, 1fr));
+}
+
+.home-dashboard-overview-row-with-nginx.home-dashboard-overview-row-count-1 {
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
+}
+
+.home-dashboard-overview-row-with-nginx.home-dashboard-overview-row-count-2 {
+    grid-template-columns: repeat(3, minmax(180px, 1fr));
+}
+
+.home-dashboard-overview-row-with-nginx.home-dashboard-overview-row-count-3 {
+    grid-template-columns: repeat(4, minmax(180px, 1fr));
+}
+
+.home-dashboard-overview-row-count-1 .home-dashboard-totals-section {
+    grid-column: span 1;
+}
+
+.home-dashboard-overview-row-count-2 .home-dashboard-totals-section {
+    grid-column: span 2;
+}
+
+.home-dashboard-overview-row-count-3 .home-dashboard-totals-section {
+    grid-column: span 3;
+}
+
+.home-dashboard-overview-row-count-1 .home-dashboard-totals-section .traffic-stats-cards-row {
+    grid-template-columns: repeat(1, minmax(180px, 1fr));
+}
+
+.home-dashboard-overview-row-count-2 .home-dashboard-totals-section .traffic-stats-cards-row {
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
+}
+
+.home-dashboard-overview-row-count-3 .home-dashboard-totals-section .traffic-stats-cards-row {
+    grid-template-columns: repeat(3, minmax(180px, 1fr));
+}
+
+.home-dashboard-totals-section .traffic-stats-cards-row {
+    display: grid;
+    gap: 16px;
+    align-items: stretch;
+    flex: 1;
+    min-width: 280px;
+}
+
+.home-dashboard-nginx-section {
+    grid-column: span 1;
+    min-width: 180px;
+}
+
+.home-dashboard-nginx-slot {
+    display: flex;
+    flex: 1;
+    min-width: 180px;
+}
+
+.home-dashboard-nginx-control {
+    padding: 5px 0 0;
+    border-radius: 8px;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+    min-width: 180px;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.home-dashboard-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 4px;
+}
+
+.home-dashboard-section-header {
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+}
+
+.home-dashboard-view-all-link,
+.home-dashboard-view-all-link:hover,
+.home-dashboard-view-all-link:focus,
+.home-dashboard-view-all-link:active {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 8px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 20px;
+    color: var(--nginxIgnition-colorTextSecondary);
+    background: var(--nginxIgnition-colorBgLayout);
+    border: 1px solid var(--nginxIgnition-colorBorderSecondary);
+    border-radius: 4px;
+    text-decoration: none;
+    transition:
+        background 0.2s,
+        border-color 0.2s,
+        color 0.2s;
+}
+
+.home-dashboard-view-all-link:hover,
+.home-dashboard-view-all-link:focus {
+    color: var(--nginxIgnition-colorTextTertiary);
+    background: var(--nginxIgnition-colorBgElevated);
+}
+
+html:not([data-theme="dark"]) .home-dashboard-view-all-link,
+html:not([data-theme="dark"]) .home-dashboard-view-all-link:focus,
+html:not([data-theme="dark"]) .home-dashboard-view-all-link:active {
+    color: var(--nginxIgnition-buttonDefaultText) !important;
+    background: var(--nginxIgnition-buttonDefaultBg) !important;
+    border-color: var(--nginxIgnition-buttonDefaultBorder) !important;
+}
+
+html:not([data-theme="dark"]) .home-dashboard-view-all-link:hover {
+    color: var(--nginxIgnition-buttonDefaultHoverText) !important;
+    background: var(--nginxIgnition-buttonDefaultBgHover) !important;
+    border-color: var(--nginxIgnition-fieldBorderHover) !important;
+}
+
+.home-dashboard-section-title {
+    font-size: 16px;
+    font-weight: 500;
     margin: 0;
+    color: var(--nginxIgnition-colorTextSecondary);
+}
+
+html:not([data-theme="dark"]) .home-dashboard-section-title {
+    color: var(--nginxIgnition-colorTextTertiary);
+}
+
+.home-dashboard-nginx-status {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    gap: 8px;
+}
+
+.home-dashboard-nginx-status-border {
+    width: 8px;
+    flex-shrink: 0;
+    align-self: stretch;
+    border-radius: 4px;
+}
+
+.home-dashboard-split-row {
+    gap: 24px;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+.home-dashboard-details-column {
+    flex: 1 1 320px;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 4px;
+}
+
+.home-dashboard-panel,
+.home-dashboard-log-content {
+    flex: 1;
+    min-height: 0;
+    max-height: 281px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.home-dashboard-panel {
+    padding: 16px;
+    background: var(--nginxIgnition-colorBgLayout);
+    border-radius: 8px;
+}
+
+.home-dashboard-details-column .home-dashboard-panel .home-dashboard-cert-list {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+}
+
+.home-dashboard-log-content .log-viewer-container {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+}
+
+.home-dashboard-panel .home-dashboard-empty,
+.home-dashboard-log-content .home-dashboard-empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 0;
-    line-height: 0 !important;
+    min-height: 0;
 }
 
-.home-guide-section {
-    margin-bottom: 80px;
-    padding: 0 40px;
+.home-dashboard-cert-list {
+    gap: 8px;
 }
 
-.home-guide-section-content {
-    flex-grow: 1;
-    width: 60%;
+.home-dashboard-cert-item {
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: var(--nginxIgnition-colorBgContainer);
+    border-radius: 6px;
 }
 
-.home-guide-footer-container {
-    background: var(--nginxIgnition-shellHeaderBg, var(--nginxIgnition-colorBgLayout));
-    padding: 60px 40px;
+.home-dashboard-cert-domains {
+    font-weight: 500;
+    color: inherit;
 }
 
-.home-guide-footer-container h1 {
-    font-size: 24px;
+.home-dashboard-cert-expiry {
+    color: var(--nginxIgnition-colorTextSecondary);
+    white-space: nowrap;
+    margin-left: 12px;
 }
 
-.home-guide-footer-container p {
-    font-size: 18px !important;
+.home-dashboard-traffic-panel {
+    min-height: auto;
+}
+
+.home-dashboard-empty {
+    padding: 16px 0;
+}
+
+.home-dashboard-section:not(.home-dashboard-totals-section) .traffic-stats-cards-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: stretch;
+    flex: 1;
+}
+
+.home-dashboard-section:not(.home-dashboard-totals-section) .traffic-stats-stat-card-link,
+.home-dashboard-totals-section .traffic-stats-stat-card-link {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 180px;
+}
+
+.home-dashboard-section .traffic-stats-stat-card {
+    flex: 1;
+    min-width: 180px;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
 }
