@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.42.0
+
+- Minor fixes and improvements
+
 ## 2.41.0
 
 - Home page was remade from scratch and is now an dashboard with a nginx ignition overview: nginx status and uptime,

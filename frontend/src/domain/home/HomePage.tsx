@@ -401,12 +401,14 @@ export default class HomePage extends React.Component<object, HomePageState> {
 
     private renderRecentErrorsBody(content: React.ReactNode) {
         const serverLogsEnabled = this.state.settings?.nginx.logs.serverLogsEnabled === true
+        const hasLogs = this.state.errorLogs.length > 0
+        const usePanel = !serverLogsEnabled || !hasLogs
 
-        if (serverLogsEnabled) {
-            return <div className="home-dashboard-log-content">{content}</div>
+        if (usePanel) {
+            return <div className="home-dashboard-panel">{content}</div>
         }
 
-        return <div className="home-dashboard-panel">{content}</div>
+        return <div className="home-dashboard-log-content">{content}</div>
     }
 
     private renderRecentErrorsPanel() {
